@@ -27,7 +27,7 @@ router.post('/', upload.single('avatar'), async (req, res) => {
     const object = {
         username: req.body.username,
         password: req.body.password,
-        firstName: req.body.firstName,
+        displayName: req.body.displayName,
         avatar: req.body.avatar
     };
     const user = new User(object);
