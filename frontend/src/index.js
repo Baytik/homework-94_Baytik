@@ -7,6 +7,7 @@ import thunkMiddleware from "redux-thunk";
 import {Provider} from "react-redux";
 import {createBrowserHistory} from "history";
 import {connectRouter, routerMiddleware, ConnectedRouter} from "connected-react-router";
+import userLogReducer from "./store/reducers/userLogReducer";
 
 const saveToLocalStorage = state => {
     try {

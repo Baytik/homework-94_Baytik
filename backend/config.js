@@ -4,7 +4,7 @@ const rootPath = __dirname;
 module.exports = {
     rootPath,
     uploadPath: path.join(rootPath, 'public/uploads'),
-    database: 'mongodb://localhost/music',
+    database: 'mongodb://localhost/posts',
     databaseOptions: {
         useNewUrlParser: true,
         useUnifiedTopology: true,

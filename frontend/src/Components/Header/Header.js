@@ -1,68 +1,89 @@
-import React, {Component} from 'react';
-import {NavLink} from "react-router-dom";
-import {connect} from "react-redux";
-import {apiURL} from "../../apiURL";
+import React, {useState} from 'react';
+import {Link, NavLink} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import IconButton from "@material-ui/core/IconButton";
+import Typography from "@material-ui/core/Typography";
+import {makeStyles} from "@material-ui/core/styles";
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import ListItem from "@material-ui/core/ListItem";
+import Divider from "@material-ui/core/Divider";
 import {logoutUser} from "../../store/actions/userLogAction";
-import userIcon from './user-icon.jpeg';
+import {Avatar, Button} from "@material-ui/core";
+import {apiURL} from "../../apiURL";
 
-class Header extends Component {
+const useStyles = makeStyles(theme => ({
+    root: {
+        flexGrow: 1,
+    },
+    menuButton: {
+        marginRight: theme.spacing(2),
+    },
+    title: {
+        flexGrow: 1,
+    },
+    mainLink: {
+        color: 'inherit',
+        textDecoration: 'none'
+    },
+    mainHeader: {
+        color: 'orange'
+    }
+}));
 
-    logoOutUserHandler = () => {
-        this.props.logoutUser();
+const Header = () => {
+    const [anchorEl, setAnchorEl] = useState(null);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
     };
 
-    render() {
-        return (
-            <header className="header">
-                <div className="logo">
-                    <NavLink to="/">Home</NavLink>
-                </div>
-                <nav className="main-nav">
-                    <ul>
-                        {this.props.user ? (
-                            <>
-                                <span>Hello, {this.props.user.displayName}!</span>
-                                {this.props.user.avatar ? (
-                                    <img src={apiURL + '/uploads/' + this.props.user.avatar} alt="" className="avatar"/>
-                                ) : (
-                                    <img src={userIcon} alt="" className="avatar"/>
-                                )}
-                                <li>
-                                    <NavLink to="/track_history">Track History</NavLink>
-                                </li>
-                                <li>
-                                    <p>or</p>
-                                </li>
-                                <li>
-                                    <button onClick={() => this.logoOutUserHandler()}>Logout</button>
-                                </li>
-                            </>
-                        ) : (
-                            <>
-                                <li>
-                                    <NavLink to="/register">Register</NavLink>
-                                </li>
-                                <li>
-                                    <p>or</p>
-                                </li>
-                                <li>
-                                    <NavLink to="/login">Login</NavLink>
-                                </li>
-                            </>
-                        )}
-                    </ul>
-                </nav>
-            </header>
-        );
-    }
-}
+    const user = useSelector(state => state.user.user);
+    const dispatch = useDispatch();
+    const classes = useStyles();
 
-const mapStateToProps = state => ({
-    user: state.user.user
-});
+    return (
+        <AppBar position="static">
+            <Toolbar>
+                <Typography variant="h5" className={classes.title}>
+                    <NavLink to="/" className={classes.mainLink}>Posts</NavLink>
+                </Typography>
+                {!user ? (
+                    <>
+                        <Button component={NavLink} to="/register" color="inherit">Register</Button>
+                        <Button component={NavLink} to="/login" color="inherit">Login</Button>
+                    </>
+                ) : (
+                    <>
+                        <IconButton color="inherit" onClick={handleClick}>
+                            {user.avatar ? (
+                                <Avatar src={apiURL + '/uploads/' + user.avatar}/>
+                            ) : (
+                                <AccountCircleIcon/>
+                            )}
+                        </IconButton>
+                        <Menu
+                            id="simple-menu"
+                            anchorEl={anchorEl}
+                            keepMounted
+                            open={Boolean(anchorEl)}
+                            onClose={handleClose}
+                        >
+                            <ListItem disabled>Hello, {user.displayName}!</ListItem>
+                            <Divider/>
+                            <MenuItem onClick={handleClose} component={Link} to="/profile">Profile</MenuItem>
+                            <MenuItem onClick={() => dispatch(logoutUser(user))}>Logout</MenuItem>
+                        </Menu>
+                    </>
+                )}
+            </Toolbar>
+        </AppBar>
+    );
+};
 
-const mapDispatchToProps = dispatch => ({
-    logoutUser: (user) => dispatch(logoutUser(user))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default Header;

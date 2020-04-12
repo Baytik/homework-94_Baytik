@@ -2,6 +2,11 @@ import React, {Component} from 'react';
 import {connect} from "react-redux";
 import FacebookLogin from "../FacebookLogin/FacebookLogin";
 import {postRegister} from "../../store/actions/userLogAction";
+import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField/TextField";
+import Button from "@material-ui/core/Button";
 
 class Register extends Component {
 
@@ -12,8 +17,12 @@ class Register extends Component {
         avatar: null
     };
 
-    changeInputHandler = e => {this.setState({[e.target.name]: e.target.value})};
-    fileChangeHandler = e => {this.setState({[e.target.name]: e.target.files[0]})};
+    changeInputHandler = e => {
+        this.setState({[e.target.name]: e.target.value})
+    };
+    fileChangeHandler = e => {
+        this.setState({[e.target.name]: e.target.files[0]})
+    };
 
     newUser = async () => {
         const User = new FormData();
@@ -26,26 +35,46 @@ class Register extends Component {
 
     render() {
         return (
-            <div className="register">
-                <p>Register</p>
-                <div>
-                    <input type="text" placeholder="Write email" name="username" onChange={this.changeInputHandler}/>
-                </div>
-                <div>
-                    <input type="text" placeholder="Write password" name="password" onChange={this.changeInputHandler}/>
-                </div>
-                <div>
-                    <input type="text" placeholder="Write display name" name="displayName" onChange={this.changeInputHandler}/>
-                </div>
-                <div>
-                    <input type="file" name="avatar" onChange={this.fileChangeHandler} style={{width: '115px'}}/>
-                    <span>Avatar</span>
-                </div>
-                <div>
-                    <button onClick={this.newUser}>Register</button>
-                </div>
-                <FacebookLogin/>
-            </div>
+            <Box ml={4}>
+                <Box pt={2} pb={2}>
+                    <Typography variant="h4">Register</Typography>
+                </Box>
+                <Grid container direction="column" spacing={2}>
+                    <Grid item xs>
+                        <TextField type="text"
+                                   label="Enter your email"
+                                   name="username"
+                                   variant="outlined"
+                                   onChange={this.changeInputHandler}
+                                   error={this.state.username.length === 0}
+                        />
+                    </Grid>
+                    <Grid item xs>
+                        <TextField type="password"
+                                   label="Enter your password"
+                                   name="password"
+                                   variant="outlined"
+                                   onChange={this.changeInputHandler}
+                                   error={this.state.password.length === 0}
+                        />
+                    </Grid>
+                    <Grid item xs>
+                        <TextField type="text"
+                                   label="Enter your display name"
+                                   name="displayName"
+                                   variant="outlined"
+                                   onChange={this.changeInputHandler}
+                                   error={this.state.displayName.length === 0}
+                        />
+                    </Grid>
+                    <Grid item xs>
+                        <Button color="primary" variant="contained" onClick={this.newUser}>Register</Button>
+                    </Grid>
+                </Grid>
+                <Box mt={4}>
+                    <FacebookLogin/>
+                </Box>
+            </Box>
         );
     }
 }

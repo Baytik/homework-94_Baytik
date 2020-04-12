@@ -36,7 +36,7 @@ router.post('/', upload.single('avatar'), async (req, res) => {
         await user.save();
         return res.send(user)
     } catch (error) {
-        return res.send(400).send(error);
+        return res.status(400).send(error);
     }
 });
 
