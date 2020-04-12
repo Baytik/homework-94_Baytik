@@ -6,6 +6,7 @@ const {nanoid} = require('nanoid');
 const config = require('../config');
 const multer = require('multer');
 const path = require('path');
+const auth = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -52,6 +53,21 @@ router.post('/sessions', async (req, res) => {
     user.generateToken();
     await user.save();
     return res.send(user)
+});
+
+router.put('/profile', [auth, upload.single('avatar')], async (req, res) => {
+    try {
+        if (req.file) {
+            req.user.avatar = req.file.filename;
+        }
+        if (req.body.displayName) {
+            req.user.displayName = req.body.displayName
+        }
+        await req.user.save();
+        return res.send(req.user);
+    } catch (e) {
+        res.status(500).send(e);
+    }
 });
 
 router.delete('/sessions', async (req, res) => {

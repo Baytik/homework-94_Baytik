@@ -5,6 +5,8 @@ import Header from "./Components/Header/Header";
 import Register from "./Components/Register/Register";
 import Login from "./Components/Login/Login";
 import {CssBaseline} from "@material-ui/core";
+import EditUserProfile from "./Components/UserProfile/EditUserProfile";
+import Profile from "./Components/Profile/Profile";
 
 class App extends Component {
     render() {
@@ -15,6 +17,8 @@ class App extends Component {
                 <Switch>
                     <Route path="/register" component={Register}/>
                     <Route path="/login" component={Login}/>
+                    <Route path="/profile" component={Profile}/>
+                    <Route path="/edit/profile" component={EditUserProfile}/>
                 </Switch>
             </div>
         )

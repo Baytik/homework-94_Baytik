@@ -49,6 +49,19 @@ export const logoutUser = () => {
     }
 };
 
+export const editUserProfile = profileData => {
+  return async (dispatch, getState) => {
+      try {
+          const token = getState().user.user;
+          const response = await axiosAPI.put('/users/profile', profileData, {headers: {'Authorization': token.token}});
+          dispatch(loginUserSuccess(response.data));
+          dispatch(push('/profile'));
+      } catch (error) {
+          dispatch(errorMessage(error))
+      }
+  }
+};
+
 export const loginWithFacebook = facebookData => {
     return async (dispatch) => {
         const response = await axiosAPI.post('/users/facebook', facebookData);
