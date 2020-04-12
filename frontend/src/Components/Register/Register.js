@@ -35,46 +35,55 @@ class Register extends Component {
 
     render() {
         return (
-            <Box ml={4}>
-                <Box pt={2} pb={2}>
-                    <Typography variant="h4">Register</Typography>
-                </Box>
-                <Grid container direction="column" spacing={2}>
-                    <Grid item xs>
-                        <TextField type="text"
-                                   label="Enter your email"
-                                   name="username"
-                                   variant="outlined"
-                                   onChange={this.changeInputHandler}
-                                   error={this.state.username.length === 0}
-                        />
+            <Grid container justify="center">
+                <Grid item xs={12} md={10} lg={4}>
+                    <Box pt={2} pb={2}>
+                        <Typography variant="h4">Register</Typography>
+                    </Box>
+                    <Grid container direction="column" spacing={2}>
+                        <Grid item xs>
+                            <TextField type="text"
+                                       label="Enter your email"
+                                       name="username"
+                                       variant="outlined"
+                                       onChange={this.changeInputHandler}
+                                       error={this.state.username.length === 0}
+                                       fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs>
+                            <TextField type="password"
+                                       label="Enter your password"
+                                       name="password"
+                                       variant="outlined"
+                                       onChange={this.changeInputHandler}
+                                       error={this.state.password.length === 0}
+                                       fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs>
+                            <TextField type="text"
+                                       label="Enter your display name"
+                                       name="displayName"
+                                       variant="outlined"
+                                       onChange={this.changeInputHandler}
+                                       error={this.state.displayName.length === 0}
+                                       fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs>
+                            <input type="file" onChange={this.fileChangeHandler} name="avatar"
+                                   style={{fontSize: '18px'}}/>
+                        </Grid>
+                        <Grid item xs>
+                            <Button color="primary" variant="contained" onClick={this.newUser}>Register</Button>
+                        </Grid>
                     </Grid>
-                    <Grid item xs>
-                        <TextField type="password"
-                                   label="Enter your password"
-                                   name="password"
-                                   variant="outlined"
-                                   onChange={this.changeInputHandler}
-                                   error={this.state.password.length === 0}
-                        />
-                    </Grid>
-                    <Grid item xs>
-                        <TextField type="text"
-                                   label="Enter your display name"
-                                   name="displayName"
-                                   variant="outlined"
-                                   onChange={this.changeInputHandler}
-                                   error={this.state.displayName.length === 0}
-                        />
-                    </Grid>
-                    <Grid item xs>
-                        <Button color="primary" variant="contained" onClick={this.newUser}>Register</Button>
-                    </Grid>
+                    <Box mt={4}>
+                        <FacebookLogin/>
+                    </Box>
                 </Grid>
-                <Box mt={4}>
-                    <FacebookLogin/>
-                </Box>
-            </Box>
+            </Grid>
         );
     }
 }
