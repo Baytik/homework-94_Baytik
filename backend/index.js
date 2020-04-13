@@ -3,6 +3,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 
 const users = require('./app/users');
+const posts = require('./app/posts');
 const config = require('./config');
 
 const app = express();
@@ -15,6 +16,7 @@ app.use(express.static('public'));
 const run = async () => {
     await mongoose.connect(config.database, config.databaseOptions);
     app.use('/users', users);
+    app.use('/posts', posts);
     app.listen(port)
 };
 

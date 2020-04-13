@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 const Profile = () => {
     const classes = useStyles();
     const user = useSelector(state => state.user.user);
-    if (!user) return <Redirect to="/"/>;
+    if (!user) return <Redirect to="/login"/>;
 
     return (
         <Grid container justify="center">

@@ -77,6 +77,7 @@ const Header = () => {
                             <ListItem disabled>Hello, {user.displayName}!</ListItem>
                             <Divider/>
                             <MenuItem onClick={handleClose} component={Link} to="/profile">Profile</MenuItem>
+                            <MenuItem onClick={handleClose} component={Link} to="/new/post">Add new post</MenuItem>
                             <MenuItem onClick={() => dispatch(logoutUser(user))}>Logout</MenuItem>
                         </Menu>
                     </>
