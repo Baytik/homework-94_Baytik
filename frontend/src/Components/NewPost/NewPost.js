@@ -1,20 +1,26 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 import {Redirect} from "react-router-dom";
-import {createPost} from "../../store/actions/postsAction";
+import {createPost, getTags} from "../../store/actions/postsAction";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField/TextField";
 import Button from "@material-ui/core/Button";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import Chip from "@material-ui/core/Chip";
 
 class NewPost extends Component {
 
     state = {
         title: '',
-        tag: '',
+        tags: '',
         image: null
     };
+
+    componentDidMount() {
+        this.props.getTags();
+    }
 
     changeInputHandler = e => {
         this.setState({[e.target.name]: e.target.value})
@@ -23,10 +29,14 @@ class NewPost extends Component {
         this.setState({[e.target.name]: e.target.files[0]})
     };
 
+    tagsChangeHandler = (e, tags) => {
+        this.setState({tags: JSON.stringify(tags)})
+    };
+
     newPost = async () => {
         const Post = new FormData();
         Post.append('title', this.state.title);
-        Post.append('tag', this.state.tag);
+        Post.append('tags', this.state.tags);
         Post.append('image', this.state.image);
         await this.props.createPost(Post);
     };
@@ -52,12 +62,19 @@ class NewPost extends Component {
                                     />
                                 </Grid>
                                 <Grid item xs>
-                                    <TextField type="text"
-                                               label="Enter tag"
-                                               name="tag"
-                                               variant="outlined"
-                                               onChange={this.changeInputHandler}
-                                               fullWidth
+                                    <Autocomplete
+                                        multiple
+                                        options={this.props.tags}
+                                        onChange={this.tagsChangeHandler}
+                                        freeSolo
+                                        renderTags={(value, getTagProps) =>
+                                            value.map((option, index) => (
+                                                <Chip variant="outlined" label={option} {...getTagProps({ index })} />
+                                            ))
+                                        }
+                                        renderInput={(params) => (
+                                            <TextField {...params} variant="outlined" label="tags"/>
+                                        )}
                                     />
                                 </Grid>
                                 <Grid item xs>
@@ -82,11 +99,13 @@ class NewPost extends Component {
 }
 
 const mapStateToProps = state => ({
-   user: state.user.user
+   user: state.user.user,
+   tags: state.posts.tags
 });
 
 const mapDispatchToProps = dispatch => ({
-    createPost: (post) => dispatch(createPost(post))
+    createPost: (post) => dispatch(createPost(post)),
+    getTags: () => dispatch(getTags())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewPost);

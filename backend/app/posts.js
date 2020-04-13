@@ -34,7 +34,7 @@ router.post('/', upload.single('image'), auth, async (req, res) => {
     const object = {
         user: user._id,
         title: req.body.title,
-        tag: req.body.tag,
+        tags: JSON.parse(req.body.tags),
         image: req.body.image,
     };
 
@@ -46,6 +46,11 @@ router.post('/', upload.single('image'), auth, async (req, res) => {
     } catch (e) {
         return res.status(400).send(e);
     }
+});
+
+router.get('/tags', async (req, res) => {
+   const tags = await Post.distinct('tags');
+   res.send(tags);
 });
 
 module.exports = router;

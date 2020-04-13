@@ -34,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CardPosts = (props) => {
-    console.log(props.posts)
     const classes = useStyles();
 
     return (
@@ -51,7 +50,7 @@ const CardPosts = (props) => {
                             </IconButton>
                         }
                         title={post.user.displayName}
-                        subheader={post.tag}
+                        subheader={post.tags[0]}
                     />
                     <CardMedia
                         className={classes.media}
