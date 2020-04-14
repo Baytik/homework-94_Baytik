@@ -1,8 +1,14 @@
-import {LOGIN_USER_ERROR, LOGIN_USER_SUCCESS, LOGOUT_USER_SUCCESS} from "../actions/userLogAction";
+import {
+    LOGIN_USER_ERROR,
+    LOGIN_USER_SUCCESS,
+    LOGOUT_USER_SUCCESS,
+    SUBSCRIBE_USER_ERROR
+} from "../actions/userLogAction";
 
 const initialState = {
     user: null,
-    loginError: null
+    loginError: null,
+    subscribeResponse: [],
 };
 
 const registerReducer = (state = initialState, action) => {
@@ -13,6 +19,8 @@ const registerReducer = (state = initialState, action) => {
             return {...state, loginError: action.error};
         case LOGOUT_USER_SUCCESS:
             return {...state, user: null};
+        case SUBSCRIBE_USER_ERROR:
+            return {...state, subscribeResponse: action.response};
         default:
             return state;
     }

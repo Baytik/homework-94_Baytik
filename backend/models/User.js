@@ -27,7 +27,8 @@ const UserSchema = new Schema({
     avatar: {
         type: String,
     },
-    facebookId: String
+    facebookId: String,
+    subscription: [String]
 });
 
 UserSchema.methods.generateToken = function() {

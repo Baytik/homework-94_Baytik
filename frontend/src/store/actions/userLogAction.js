@@ -6,8 +6,10 @@ export const ERROR_MESSAGE = 'ERROR_MESSAGE';
 export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS';
 export const LOGIN_USER_ERROR = 'LOGIN_USER_ERROR';
 export const LOGOUT_USER_SUCCESS = 'LOGOUT_USER_SUCCESS';
+export const SUBSCRIBE_USER_ERROR = 'SUBSCRIBE_USER_ERROR';
 
 export const errorMessage = (error) => ({type: ERROR_MESSAGE, error});
+export const subscribeUserError = (response) => ({type: SUBSCRIBE_USER_ERROR, response});
 
 export const loginUserSuccess = (user) => ({type: LOGIN_USER_SUCCESS, user});
 export const loginUserError = (error) => ({type: LOGIN_USER_ERROR, error});
@@ -59,6 +61,14 @@ export const editUserProfile = profileData => {
       } catch (error) {
           dispatch(errorMessage(error))
       }
+  }
+};
+
+export const subscribeUser = username => {
+  return async (dispatch, getState) => {
+          const token = getState().user.user;
+          const response = await axiosAPI.post('/users/subscribe', username, {headers: {'Authorization': token.token}});
+          dispatch(subscribeUserError(response.data))
   }
 };
 

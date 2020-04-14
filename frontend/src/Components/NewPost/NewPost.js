@@ -73,7 +73,7 @@ class NewPost extends Component {
                                             ))
                                         }
                                         renderInput={(params) => (
-                                            <TextField {...params} variant="outlined" label="tags"/>
+                                            <TextField {...params} variant="outlined" label="Tags"/>
                                         )}
                                     />
                                 </Grid>

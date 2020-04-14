@@ -55,6 +55,28 @@ router.post('/sessions', async (req, res) => {
     return res.send(user)
 });
 
+router.post('/subscribe', auth, async (req, res) => {
+    const user = await User.findOne({username: req.body.username});
+    if (!user) {
+        return res.send({error: `Not found ${req.body.username}`})
+    }
+    req.user.subscription.map(sub => {
+        if (JSON.stringify(sub) === JSON.stringify(user._id)) {
+            return res.send({error: 'You are already subscribed to this user'});
+        }
+    });
+    if (JSON.stringify(req.user._id) === JSON.stringify(user._id)) {
+        return res.send({error: 'You cannot subscribe to yourself'})
+    }
+    req.user.subscription.push(user._id);
+    try {
+        await req.user.save();
+        return res.send(req.user.subscription)
+    } catch (e) {
+        return res.status(400).send(e);
+    }
+});
+
 router.put('/profile', [auth, upload.single('avatar')], async (req, res) => {
     try {
         if (req.file) {

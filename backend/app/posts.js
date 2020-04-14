@@ -7,7 +7,6 @@ const multer = require('multer');
 
 const Post = require('../models/Post');
 const auth = require('../middleware/auth');
-const user = require('../models/User');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -20,9 +19,17 @@ const storage = multer.diskStorage({
 const upload = multer({storage});
 
 router.get('/', auth, async (req, res) => {
+    const array = [];
     const user = req.user;
-    const posts = await Post.find({user: user._id}).populate('user', {displayName: 1, avatar: 1});
-    return res.send(posts)
+    const posts = await Post.find({user: {$in: user.subscription}}).populate('user', {displayName: 1, avatar: 1});
+    posts.map(post => {
+        array.push(post)
+    });
+    const myPosts = await Post.find({user: user._id}).populate('user', {displayName: 1, avatar: 1});
+    myPosts.map(myPost => {
+        array.push(myPost)
+    });
+    return res.send(array)
 });
 
 router.post('/', upload.single('image'), auth, async (req, res) => {
