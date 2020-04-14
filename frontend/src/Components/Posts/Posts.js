@@ -10,6 +10,7 @@ import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import TextField from "@material-ui/core/TextField/TextField";
 import Alert from "@material-ui/lab/Alert/Alert";
+import {Typography} from "@material-ui/core";
 
 class Posts extends Component {
 
@@ -29,6 +30,7 @@ class Posts extends Component {
         await this.props.subscribeUser(subscribe);
         if (!this.props.subscribeResponse.error) {
         this.setState({purchasing: false});
+        await this.props.getPosts();
         }
     };
 
@@ -75,7 +77,11 @@ class Posts extends Component {
                         </Box>
                     )}
                 </Modal>
+                {this.props.posts.length === 0 ? (
+                    <Typography variant="h4">No posts</Typography>
+                ): (
                 <CardPosts posts={this.props.posts}/>
+                )}
             </>
         );
     }
